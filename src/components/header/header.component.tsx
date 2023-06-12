@@ -21,17 +21,21 @@ const Header = (props: any) => {
                     <Nav className="me-auto">
                         <Link to="/">Home</Link>
                         <NavDropdown title="Category" id="basic-nav-dropdown">
-                        <Link className="dropdown-item" to="/products/smartphones">Mobiles</Link>
-                        <Link className="dropdown-item" to="/products/laptops">Laptops</Link>
-                        <Link className="dropdown-item" to="/products/fashion">Fashion</Link>
-                        <Link className="dropdown-item" to="/products/skincare">Cosmetics</Link>
-                        <Link className="dropdown-item" to="/products/footware">Footware</Link>
-                        <Link className="dropdown-item" to="/products/kids">Kids</Link>
+                            <Link className="dropdown-item" to="/products/smartphones">Mobiles</Link>
+                            <Link className="dropdown-item" to="/products/laptops">Laptops</Link>
+                            <Link className="dropdown-item" to="/products/fashion">Fashion</Link>
+                            <Link className="dropdown-item" to="/products/skincare">Cosmetics</Link>
+                            <Link className="dropdown-item" to="/products/footware">Footware</Link>
+                            <Link className="dropdown-item" to="/products/kids">Kids</Link>
                         </NavDropdown>
                         <Link to="/blog">Blog</Link>
                         <Link to="/about-us">About Us</Link>
                     </Nav>
                 </Navbar.Collapse>
+                <Nav>
+                    <Link to="/sign-up">Sign Up</Link>
+                    <Link to="/sign-in">Sign In</Link>
+                </Nav>
             </Container>
         </Navbar>
     );
