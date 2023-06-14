@@ -1,18 +1,39 @@
-import { Button } from "react-bootstrap";
+import { Alert, Button, Spinner } from "react-bootstrap";
 import { useForm } from "react-hook-form";
+import { useAppDispatch, useAppSelector } from "../../../hooks";
+import { registerUserAction, UserRegisterObj } from "../userReducer";
 import './sign-up.css';
 
 const SignUp = (props: any) => {
+    const actionDispatcher = useAppDispatch();
+    const {
+        isRegistrationInProgress,
+        isUserRegistered,
+        errorMessage
+    } = useAppSelector(state => state.userData);
+    console.log(isRegistrationInProgress);
 
     const { register, handleSubmit, formState: { errors } } = useForm();
-
     const onSubmit = (data: any) => {
-        console.log(data);
+        const userData: UserRegisterObj = {
+            userName: `${data.firstName} ${data.lastName}`,
+            email: data.email,
+            password: data.password
+        };
+        actionDispatcher(registerUserAction(userData));
     }
+    console.log();
 
     return (
         <div className="form-container">
             <div className="registration-form">
+                {
+                    errorMessage !== '' && (
+                        <Alert variant="danger" dismissible>
+                            {errorMessage}
+                        </Alert>
+                    )
+                }
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="form-row">
                         <div className="col-md-12 mb-3">
@@ -60,7 +81,17 @@ const SignUp = (props: any) => {
                         </div>
                     </div>
                     <div className="form-row">
-                        <Button type='submit'>Register</Button>
+                        <Button type='submit' >
+                            {
+                                isRegistrationInProgress ? (
+                                    <>
+                                        <Spinner animation="border" variant="primary" />
+                                        <span>Registering</span>
+                                    </>
+                                ) : 'Register'
+                            }
+
+                        </Button>
                     </div>
                 </form>
             </div>

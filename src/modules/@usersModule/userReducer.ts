@@ -2,6 +2,8 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 export interface User {
+    errorMessage: string;
+    isRegistrationInProgress: boolean;
     isUserRegistered: boolean;
     isUserLoggedIn: boolean;
     userName: string;
@@ -15,6 +17,8 @@ export interface UserRegisterObj {
 }
 
 const userInitialState: User = {
+    errorMessage: '',
+    isRegistrationInProgress: false,
     isUserRegistered: false,
     isUserLoggedIn: false,
     userName: '',
@@ -42,17 +46,32 @@ const userInitialState: User = {
  *
  */
 
-export const registerUserAction = createAsyncThunk(
+export const registerUserAction: any =  createAsyncThunk(
     'user/registerUser',
-    async (userData: UserRegisterObj, { rejectWithValue }) => {
+     async (userData: UserRegisterObj, { rejectWithValue }) => {
       //const {userName, email, password} = userData;
       try {
         const API_URL = 'http://localhost:4000/api/v1/users/register';
-        const response = await axios.post(API_URL, userData);
+        const response: any = await axios.post(API_URL, userData);
         //const data = await response.json();
         return response.data;
       } catch (err: any) {
         let errorMessage = 'Unable to register the user. Pleae try again.';
+        /**
+         *  {
+         *     err:  {
+         *        response:  {
+         *             data:  {
+         *                message: ''
+         *              }
+         *         }
+         *     }
+         *    
+         *     
+         *  }
+         * 
+         * if('')
+         */
         if(err?.response?.data?.message) {
           errorMessage = err?.response?.data?.message;
         }
@@ -67,8 +86,21 @@ const userSlice = createSlice({
     name: 'user',
     initialState: userInitialState,
     reducers: {},
-    extraReducers: (build: any) => {
-
+    extraReducers: (builder) => {
+      builder
+      .addCase(registerUserAction.pending, (state: any, action: any) => {
+         state.isRegistrationInProgress = true;
+      })
+      .addCase(registerUserAction.fulfilled, (state: any, action: any) => {
+         state.isRegistrationInProgress = false;
+         state.isUserRegistered = true;
+         state.errorMessage = '';
+      })
+     .addCase(registerUserAction.rejected, (state: any, action: any) => {
+         state.isRegistrationInProgress = false;
+         state.isUserRegistered = false;
+         state.errorMessage = action?.payload?.message
+      })
     }
 });
 
