@@ -3,11 +3,14 @@ import axios from "axios";
 
 export interface User {
     errorMessage: string;
+    isLoginInProgress: boolean;
     isRegistrationInProgress: boolean;
     isUserRegistered: boolean;
     isUserLoggedIn: boolean;
     userName: string;
     cartId: string;
+    userId: string;
+    token: string;
 }
 
 export interface UserRegisterObj {
@@ -16,13 +19,21 @@ export interface UserRegisterObj {
     password: string;
 }
 
+export interface LoginData {
+    email: string;
+    password: string;
+}
+
 const userInitialState: User = {
     errorMessage: '',
+    isLoginInProgress: false,
     isRegistrationInProgress: false,
     isUserRegistered: false,
     isUserLoggedIn: false,
     userName: '',
-    cartId: '' 
+    cartId: '',
+    userId: '',
+    token: ''
 }
 
 /**
@@ -54,24 +65,13 @@ export const registerUserAction: any =  createAsyncThunk(
         const API_URL = 'http://localhost:4000/api/v1/users/register';
         const response: any = await axios.post(API_URL, userData);
         //const data = await response.json();
-        return response.data;
+        // {
+               //"message": "User created successfully"
+         //}
+         
+        return response.data; // ==>  action.payload
       } catch (err: any) {
         let errorMessage = 'Unable to register the user. Pleae try again.';
-        /**
-         *  {
-         *     err:  {
-         *        response:  {
-         *             data:  {
-         *                message: ''
-         *              }
-         *         }
-         *     }
-         *    
-         *     
-         *  }
-         * 
-         * if('')
-         */
         if(err?.response?.data?.message) {
           errorMessage = err?.response?.data?.message;
         }
@@ -80,7 +80,27 @@ export const registerUserAction: any =  createAsyncThunk(
         })
       }
     }
-  );
+);
+
+ 
+  export const loginUserAction: any = createAsyncThunk(
+    'user/loginUser',
+    async(loginData: LoginData, { rejectWithValue }) => {
+       try {
+           const LOGIN_API_URL = 'http://localhost:4000/api/v1/users/login';
+           const response: any = await axios.post(LOGIN_API_URL, loginData);
+           return response.data;
+       } catch(err: any) {
+          let errorMessage = 'Unable to login. Pleae try again.';
+          if(err?.response?.data?.message) {
+            errorMessage = err?.response?.data?.message;
+          }
+          return rejectWithValue({
+            message: errorMessage
+          })
+       }
+    }
+);
 
 const userSlice = createSlice({
     name: 'user',
@@ -101,6 +121,22 @@ const userSlice = createSlice({
          state.isUserRegistered = false;
          state.errorMessage = action?.payload?.message
       })
+      .addCase(loginUserAction.pending, (state: any, action: any) => {
+        state.isLoginInProgress = true;
+      })
+      .addCase(loginUserAction.fulfilled, (state: any, action: any) => {
+         const userId = action?.payload?.userId;
+         const cartId = action?.payload?.cartId;
+         const token = action?.payload?.token;
+         const userName = action?.payload?.userName;
+         sessionStorage.setItem('userId', userId);
+         sessionStorage.setItem('cartId', cartId);
+         sessionStorage.setItem('token', token);
+         sessionStorage.setItem('userName', userName);
+      })
+      .addCase(loginUserAction.rejected, (state: any, action: any) => {
+        state.errorMessage = action?.payload?.message;
+      })
     }
 });
 
@@ -111,6 +147,10 @@ const userSlice = createSlice({
  *    }
  * 
  */
+
+
+
+
 const { reducer, actions } = userSlice;
 
 export default reducer;

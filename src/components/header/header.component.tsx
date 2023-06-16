@@ -1,9 +1,11 @@
 import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
+import {FaRegUserCircle, FaShoppingCart} from 'react-icons/fa'
 import { Link } from "react-router-dom";
 import logo from '../../images/eshop-logo.png';
 import './header.css';
 
 const Header = (props: any) => {
+    const token = sessionStorage.getItem('token');
     return (
         <Navbar bg="primary" variant="dark">
             <Container>
@@ -33,8 +35,20 @@ const Header = (props: any) => {
                     </Nav>
                 </Navbar.Collapse>
                 <Nav>
-                    <Link to="/sign-up">Sign Up</Link>
-                    <Link to="/sign-in">Sign In</Link>
+                    {
+                        token ? (
+                             <>
+                                 <FaRegUserCircle className="user-icon"></FaRegUserCircle>
+                                 <FaShoppingCart className="cart-icon"></FaShoppingCart>
+                             </>
+                        ) : (
+                            <>
+                                <Link to="/sign-up">Sign Up</Link>
+                                <Link to="/sign-in">Sign In</Link>
+                            </>
+                        )
+                    }
+                  
                 </Nav>
             </Container>
         </Navbar>

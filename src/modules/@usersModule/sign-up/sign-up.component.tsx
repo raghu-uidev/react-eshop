@@ -1,17 +1,18 @@
 import { Alert, Button, Spinner } from "react-bootstrap";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { registerUserAction, UserRegisterObj } from "../userReducer";
 import './sign-up.css';
 
 const SignUp = (props: any) => {
+    const navigate = useNavigate();
     const actionDispatcher = useAppDispatch();
     const {
         isRegistrationInProgress,
         isUserRegistered,
         errorMessage
     } = useAppSelector(state => state.userData);
-    console.log(isRegistrationInProgress);
 
     const { register, handleSubmit, formState: { errors } } = useForm();
     const onSubmit = (data: any) => {
@@ -22,18 +23,22 @@ const SignUp = (props: any) => {
         };
         actionDispatcher(registerUserAction(userData));
     }
-    console.log();
+
+    if(isUserRegistered) {
+        navigate('/sign-in');
+    }
 
     return (
         <div className="form-container">
             <div className="registration-form">
                 {
-                    errorMessage !== '' && (
+                    errorMessage  ? (
                         <Alert variant="danger" dismissible>
                             {errorMessage}
                         </Alert>
-                    )
+                    ) : ''
                 }
+            
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="form-row">
                         <div className="col-md-12 mb-3">
