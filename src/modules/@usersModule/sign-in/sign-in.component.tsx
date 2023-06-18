@@ -1,20 +1,38 @@
+import { useEffect } from "react";
 import { Button } from "react-bootstrap";
 import { useForm } from "react-hook-form";
-import { useAppDispatch } from "../../../hooks";
+import { useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { LoginData, loginUserAction } from "../userReducer";
 import './sign-in.css';
 
 const SignIn = (props: any) => {
 
     //testuserreact@webla.com, start12345
+
+    const tokenId = sessionStorage.getItem('token');
+
+    const { isUserLoggedIn } = useAppSelector(state => state.userData);
    
     const actionDispatcher = useAppDispatch();
+
+    const navigate = useNavigate();
    
     const {register, handleSubmit, formState: {errors}} = useForm();
 
     const onSubmit = (data: any) => {
         actionDispatcher(loginUserAction(data));
     }
+
+    if(isUserLoggedIn) {
+        navigate('/');
+    }
+
+    useEffect(() => {
+      if(tokenId) {
+        navigate('/')
+      }
+    },[]);
 
     return (
         <div className="form-container">

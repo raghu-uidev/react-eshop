@@ -7,10 +7,6 @@ export interface User {
     isRegistrationInProgress: boolean;
     isUserRegistered: boolean;
     isUserLoggedIn: boolean;
-    userName: string;
-    cartId: string;
-    userId: string;
-    token: string;
 }
 
 export interface UserRegisterObj {
@@ -30,10 +26,6 @@ const userInitialState: User = {
     isRegistrationInProgress: false,
     isUserRegistered: false,
     isUserLoggedIn: false,
-    userName: '',
-    cartId: '',
-    userId: '',
-    token: ''
 }
 
 /**
@@ -133,9 +125,11 @@ const userSlice = createSlice({
          sessionStorage.setItem('cartId', cartId);
          sessionStorage.setItem('token', token);
          sessionStorage.setItem('userName', userName);
+         state.isUserLoggedIn = true;
       })
       .addCase(loginUserAction.rejected, (state: any, action: any) => {
         state.errorMessage = action?.payload?.message;
+        state.isUserLoggedIn = false;
       })
     }
 });

@@ -1,11 +1,13 @@
 import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
 import {FaRegUserCircle, FaShoppingCart} from 'react-icons/fa'
 import { Link } from "react-router-dom";
+import { useAppSelector } from "../../hooks";
 import logo from '../../images/eshop-logo.png';
 import './header.css';
 
 const Header = (props: any) => {
     const token = sessionStorage.getItem('token');
+    const { isUserLoggedIn } = useAppSelector(state => state.userData);
     return (
         <Navbar bg="primary" variant="dark">
             <Container>
@@ -36,7 +38,7 @@ const Header = (props: any) => {
                 </Navbar.Collapse>
                 <Nav>
                     {
-                        token ? (
+                        token || isUserLoggedIn ? (
                              <>
                                  <FaRegUserCircle className="user-icon"></FaRegUserCircle>
                                  <FaShoppingCart className="cart-icon"></FaShoppingCart>
