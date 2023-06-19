@@ -5,16 +5,16 @@ const BannerCarousel = (props: any) => {
     const carouselList = BannerCarouselConfig;
     return (
         <Carousel>
-             {carouselList.map(carousel => (
-                <Carousel.Item>
-                <img
-                    className="d-block w-100"
-                    src={carousel.imageSrc}
-                    alt="First slide"
-                />
-            </Carousel.Item>
-             ))}
-            
+            {carouselList.map((carousel, index) => (
+                <Carousel.Item key={index}>
+                    <img
+                        className="d-block w-100"
+                        src={carousel.imageSrc}
+                        alt="First slide"
+                    />
+                </Carousel.Item>
+            ))}
+
         </Carousel>
     )
 };
