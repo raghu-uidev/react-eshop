@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getProductsAction } from "./products.actions";
+import { getProductByIdAction, getProductsAction } from "./products.actions";
 
 export interface ProductsData {
    isProductsLoading: boolean,
@@ -9,7 +9,8 @@ export interface ProductsData {
    fashion: Array<Object>,
    skincare: Array<Object>,
    kids: Array<Object>,
-   footware: Array<Object>
+   footware: Array<Object>,
+   productDetailData: any
 }
 
 const productsInitialState: ProductsData = {
@@ -20,7 +21,8 @@ const productsInitialState: ProductsData = {
    fashion: [],
    skincare: [],
    kids: [],
-   footware: []
+   footware: [],
+   productDetailData: {}
 }
 
 const productsSlice = createSlice({
@@ -50,6 +52,17 @@ const productsSlice = createSlice({
         })
         .addCase(getProductsAction.rejected, (state: any, action: any) => {
             state.errorMessage = action.payload.message;
+        })
+        .addCase(getProductByIdAction.pending, (state, action) => {
+            state.isProductsLoading = true;
+        })
+        .addCase(getProductByIdAction.fulfilled, (state: any, action: any) => {
+            state.isProductsLoading = false;
+            state.productDetailData = action.payload[0]
+        })
+        .addCase(getProductByIdAction.rejected, (state: any, action: any) => {
+            state.isProductsLoading = false;
+            state.errorMessage = action.paylaod.message;
         })
     }
 });

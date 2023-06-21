@@ -7,13 +7,14 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import { Route, Routes } from 'react-router';
 import Header from './components/header/header.component';
-import ProductsList from './components/products/products-category.component';
+import ProductsList from './components/products/products-list.component';
 import AboutUs from './components/about-us/about-us.component';
 import Blog from './components/blog/blog.component';
 import SignUp from './modules/@usersModule/sign-up/sign-up.component';
 import SignIn from './modules/@usersModule/sign-in/sign-in.component';
 import { Provider } from 'react-redux';
 import appStore from './store';
+import ProductDetails from './components/product-details/product-details.component';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -29,6 +30,7 @@ root.render(
         <Route key={4} path='/blog' element={<Blog />}> </Route>
         <Route key={5} path='/sign-up' element={<SignUp />}> </Route>
         <Route key={6} path='/sign-in' element={<SignIn />}> </Route>
+        <Route key={7} path='/product/:id' element={<ProductDetails />}></Route>
       </Routes>
     </BrowserRouter>
   </Provider>
