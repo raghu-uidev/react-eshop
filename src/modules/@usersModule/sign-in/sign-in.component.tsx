@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Button } from "react-bootstrap";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { LoginData, loginUserAction } from "../userReducer";
 import './sign-in.css';
@@ -69,6 +69,9 @@ const SignIn = (props: any) => {
                                 <div className='error'>Password must be less than or equal to 15 letters</div>
                             )}
                         </div>
+                    </div>
+                    <div className="form-row">
+                        No Account? Please register here: <Link to="/sign-up">Sign Up</Link>
                     </div>
                     <div className="form-row">
                         <Button type='submit' >Login</Button>
