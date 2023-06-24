@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { Button, Card } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../hooks";
-import { getProductsAction } from "../../modules/@productsModule/products.actions";
+import { useAppSelector, useAppDispatch } from "../../../hooks";
+import { getProductsAction } from "../products.actions";
 import './products.css';
 
 const ProductsList = (props: any) => {

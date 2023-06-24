@@ -7,14 +7,14 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import { Route, Routes } from 'react-router';
 import Header from './components/header/header.component';
-import ProductsList from './components/products/products-list.component';
 import AboutUs from './components/about-us/about-us.component';
 import Blog from './components/blog/blog.component';
 import SignUp from './modules/@usersModule/sign-up/sign-up.component';
 import SignIn from './modules/@usersModule/sign-in/sign-in.component';
 import { Provider } from 'react-redux';
 import appStore from './store';
-import ProductDetails from './components/product-details/product-details.component';
+import ProductsList from './modules/@productsModule/products/products-list.component';
+import ProductDetails from './modules/@productsModule/product-details/product-details.component';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

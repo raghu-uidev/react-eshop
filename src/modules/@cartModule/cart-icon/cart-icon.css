@@ -1,0 +1,26 @@
+
+.cart-icon-container {
+    position: relative;
+}
+.cart-icon {
+    font-size: 24px;
+    margin: 0 10px;
+    color: #fff;
+    cursor: pointer;
+}
+
+.count-bubble {
+    color: #fff;
+    background-color: crimson;
+    height: 18px;
+    width: 18px;
+    text-align: center;
+    border-radius: 50%;
+    position: absolute;
+    top: -5px;
+    right: 2px;
+    font-size: 10px;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+}

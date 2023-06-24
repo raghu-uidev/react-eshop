@@ -1,9 +1,11 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Button, Carousel } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../hooks";
-import { getProductByIdAction } from "../../modules/@productsModule/products.actions";
+
 import StarRatingComponent from 'react-star-rating-component';
+import { useAppDispatch, useAppSelector } from "../../../hooks";
+import { addProductToCartAction, CartProductData } from "../../@cartModule/cart.actions";
+import { getProductByIdAction } from "../products.actions";
 import './product-details.css';
 
 export interface ProductDetailsInterface {
@@ -12,6 +14,7 @@ export interface ProductDetailsInterface {
 
 const ProductDetails = (props: any) => {
     const { id } = useParams();
+    const [quantity, setQuantity] = useState(1);
     const actionDispatcher = useAppDispatch();
     const navigate = useNavigate();
     const productDetails: any = useAppSelector(state => state.productsData.productDetailData);
@@ -30,11 +33,24 @@ const ProductDetails = (props: any) => {
     }, [id]);
 
     const addProductToCart = () => {
+        const cartProductData: CartProductData = {
+            _id: productDetails._id,
+            title: productDetails.title,
+            price: finalPrice,
+            thumbnail: productDetails.thumbnail,
+            userQuantity: Number(quantity)
+        };
         if(sessionStorage.getItem('token')) {
+            actionDispatcher(addProductToCartAction(cartProductData));
 
         } else {
             navigate('/sign-in');
         }
+    }
+
+    const onQuntityChange = (event: any) => {
+        console.log(event.target.value);
+        setQuantity(event.target.value);
     }
 
     return (
@@ -90,7 +106,7 @@ const ProductDetails = (props: any) => {
                         <div className="separator">
                             <label className="label">Stock</label>
                             <div className="product-data">
-                                <select className="stock-selector">
+                                <select className="stock-selector" onChange={onQuntityChange}>
                                     {
                                         [...Array(productStock)].map((item, i) => (
                                             <option>{i + 1}</option>
